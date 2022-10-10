@@ -6,6 +6,8 @@ import time
 import math
 import random
 
+import statistics as st
+
 random.seed(120)
 
 #
@@ -31,12 +33,59 @@ returns: An key-value pair (Kj, Vj) such that Kj is an i’th smallest key.
 
 
 def QuickSelect(arr, i):
-    # Your code here
+    A_less = []
+    A_grtr = []
+    A_eq = []
+    if len(arr) <= 1:
+        return arr[0]
+    else:
+        p = get_random_index(arr)
+        bigP = arr[p][0]
+        for n in arr:
+            if n[0] < bigP:
+                A_less.append(n)
+            elif n[0] > bigP:
+                A_grtr.append(n)
+            else:
+                A_eq.append(n)
 
-    # Feel free to use get_random_index(arr) or get_random_int(start_inclusive, end_inclusive)
-    # ... see the helper functions below
-    pass
-    return (0, -1)
+        if i < len(A_less):
+            return QuickSelect(A_less,i)
+
+        elif i >= (len(A_less) + len(A_eq)):
+            return QuickSelect(A_grtr,i-len(A_less)-len(A_eq))
+        else:
+            return A_eq[0]
+
+# QS medium of 3 implementation 
+
+def QuickSelectMed(arr, i):
+    A_less = []
+    A_grtr = []
+    A_eq = []
+    if len(arr) <= 1:
+        return arr[0]
+    else:
+        p_1 = get_random_index(arr)
+        p_2 = get_random_index(arr)
+        p_3 = get_random_index(arr)
+
+        bigP = arr[int(np.median([p_1,p_2,p_3]))][0]
+        for n in arr:
+            if n[0] < bigP:
+                A_less.append(n)
+            elif n[0] > bigP:
+                A_grtr.append(n)
+            else:
+                A_eq.append(n)
+
+        if i < len(A_less):
+            return QuickSelect(A_less,i)
+
+        elif i >= (len(A_less) + len(A_eq)):
+            return QuickSelect(A_grtr,i-len(A_less)-len(A_eq))
+        else:
+            return A_eq[0]
 
 
 '''
@@ -52,10 +101,16 @@ NOTE: This is different from the QuickSelect definition. This function takes in 
 
 
 def MergeSortSelect(arr, query_list):
+    sorted_arr = MergeSort(arr)
+    results = []
+    for i in query_list:
+        results.append(sorted_arr[i])
+
+    return results
     # Only call MergeSort once
     # ... MergeSort has already been implemented for you (see below)
-    pass
-    return [(0, -1)] * len(query_list)  # replace this line with your return
+    # pass
+    # return [(0, -1)] * len(query_list)  # replace this line with your return
 
 
 ##################################
@@ -71,8 +126,8 @@ def experiments():
 
     # Feel free to edit these initial parameters
 
-    RUNS = 20  # Number of runs for each trial; more runs means better distributions approximation but longer experiment
-    HEIGHT = 1.5  # Height of a chart
+    RUNS = 100  # Number of runs for each trial; more runs means better distributions approximation but longer experiment
+    HEIGHT = 1.3  # Height of a chart
     WIDTH = 3   # Width of a chart
     # Determines if subcharts share the same axis scale/limits
     # ... since the trails cover a wide range, sharing the same scale/limits can cause some lines to be too small.
@@ -112,6 +167,21 @@ def experiments():
                 k_record.append(ki)
                 ms_record.append(seconds * 1000)  # Convert seconds to milliseconds
                 algorithm_record.append("QuickSelect")
+
+            # QuickSelect Medium of 3 Runs
+            for _ in range(RUNS):
+                # Record Time Taken to Solve All Queries
+                start_time = time.time()
+                for q in queries:
+                    # Copy dataset just to be safe
+                    QuickSelectMed(dataset_size_n.copy(), q)
+                seconds = time.time() - start_time
+                # Record this trial run
+                n_record.append(ni)
+                k_record.append(ki)
+                ms_record.append(seconds * 1000)  # Convert seconds to milliseconds
+                algorithm_record.append("QuickSelectMedianExt")
+
 
             # MergeSort Runs
             for _ in range(RUNS):
