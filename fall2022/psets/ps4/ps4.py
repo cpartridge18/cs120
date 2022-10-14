@@ -122,11 +122,11 @@ def MergeSortSelect(arr, query_list):
 
 def experiments():
     # Edit this parameter
-    k = [1, 1, 1, 1, 1]
+    k = [30, 32, 40, 48,56]
 
     # Feel free to edit these initial parameters
 
-    RUNS = 100  # Number of runs for each trial; more runs means better distributions approximation but longer experiment
+    RUNS = 20  # Number of runs for each trial; more runs means better distributions approximation but longer experiment
     HEIGHT = 1.3  # Height of a chart
     WIDTH = 3   # Width of a chart
     # Determines if subcharts share the same axis scale/limits
@@ -139,6 +139,8 @@ def experiments():
     # The search space for our parameters
     # DO NOT EDIT these parameters for your final figure
     n = [2 ** i for i in range(10, 16)]
+    # n = [71000, 71800, 73600, 74400, 75000]
+
     # Our deterministically generated dataset
     fixed_dataset = sorted([(0, K) for K in range(max(n))], key=lambda T: T[1], reverse=True)
 
