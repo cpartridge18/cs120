@@ -35,7 +35,7 @@ random.seed(120)
 '''
 
 # The timeout length in seconds
-TIMEOUT_LENGTH = 10
+TIMEOUT_LENGTH = 60
 
 def benchmark():
     # You may experiment with these parameters if you wish!

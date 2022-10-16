@@ -53,14 +53,17 @@ class Graph:
         return Graph(self.N, self.edges, self.colors)
 
     def clone_and_merge(self, g2, g1u, g2v):
+        print(g1u, g2v)
         '''
         DOES NOT COPY COLORS
         '''
         g1 = self
         edges = g1.edges + [[v + g1.N for v in u_list] for u_list in g2.edges]
+        print(edges)
         g = Graph(g1.N + g2.N, edges)
         if g1u is not None and g2v is not None:
             g = g.add_edge(g1u, g2v + g1.N)
+        print(g.edges)
         return g
 
     # Checks all colors
@@ -116,20 +119,79 @@ def exhaustive_search_coloring(G, k=3):
 def bfs_2_coloring(G, precolored_nodes=None):
     # Assign every precolored node to have color 2
     # Initialize visited set to contain precolored nodes if they exist
-    visited = set()
+    # print(G.edges)
+    # print(G.colors)
+
+    # unvisited = clone(G)  # Create a new graph for tracking unvisited nodes
+
+    visited = set()  #S
     G.reset_colors()
     preset_color = 2
     if precolored_nodes is not None:
         for node in precolored_nodes:
+
+            # unvisited.remove_edge(node)
+
             G.colors[node] = preset_color
             visited.add(node)
 
         if len(precolored_nodes) == G.N:
             return G.colors
-    
-    # TODO: Complete this function by implementing two-coloring using the colors 0 and 1.
-    # If there is no valid coloring, reset all the colors to None using G.reset_colors()
-    
+
+
+    # Start with breadth-first search to get ordering based on distance to start node
+    if precolored_nodes is not None:
+        for node in precolored_nodes:
+            del G.edges[node] #remove all precolored edges
+
+    order = {0:[0]} # order is a dictionary with distance from start vertex as key
+                    #      and list of vertices in that frontier as value
+    pre_order = []  # holding list for order dict
+    F = [0]
+    unvisited = list(range(1, G.N)) # we assume 0 was already visited
+    # print(len(F))
+    d = 1   # dictionary is autofilled with distance 0
+
+    # runs until all nodes have been visited. 
+    while unvisited:
+
+        if not F:   # if frontier is empty but there are unvisited nodes, choose the first from the list. 
+                    #   We will just add this to the dictionary as a distance 1 greater than the last 
+                    #   connected component from the start vertex, when in reality distance is infinite.
+            F = [unvisited[0]]
+
+        pre_F = []
+        pre_order = []        
+        for f in F:               # for all vertices in the previous frontier
+            for v in G.edges[f]:  # check their edges
+                if v in unvisited: # if they haven't been visited
+                    pre_order.append(v)   # add to pre_order list 
+                    pre_F.append(v)       # add to pre_froniter list
+                    unvisited.remove(v)    # add all nodes that share an edge
+
+        if pre_order:
+            order[d] = pre_order   # add to order
+        F = pre_F   # update frontier
+        d += 1
+
+    # based on BFS ordering, color either 0 or 1    
+
+    for distance in order: 
+        if (distance % 2) == 0:
+            color = 0
+        else:
+            color = 1
+
+        for node in order[distance]:
+            G.colors[node] = color
+
+    # If G is disconnected, then run BFS on each connected component separately
+
+
+
+    if G.is_graph_coloring_valid():
+            return G.colors
+
     G.reset_colors()
     return None
 
