@@ -53,17 +53,14 @@ class Graph:
         return Graph(self.N, self.edges, self.colors)
 
     def clone_and_merge(self, g2, g1u, g2v):
-        print(g1u, g2v)
         '''
         DOES NOT COPY COLORS
         '''
         g1 = self
         edges = g1.edges + [[v + g1.N for v in u_list] for u_list in g2.edges]
-        print(edges)
         g = Graph(g1.N + g2.N, edges)
         if g1u is not None and g2v is not None:
             g = g.add_edge(g1u, g2v + g1.N)
-        print(g.edges)
         return g
 
     # Checks all colors
@@ -203,7 +200,10 @@ def bfs_2_coloring(G, precolored_nodes=None):
 # Checks if subset is an independent set in G 
 def is_independent_set(G, subset):
     # TODO: Complete this function
-
+    for u in subset:
+        for v in G.edges(u):
+            if v in subset:
+                return False
     return True
 
 '''
@@ -231,6 +231,30 @@ def is_independent_set(G, subset):
 # If no coloring is possible, resets all of G's colors to None and returns None.
 def iset_bfs_3_coloring(G):
     # TODO: Complete this function.
+    # create all subsets of G's vertices less than or equal to G.N/3
+
+    # mother of god this is even worse than 1a what are you doing
+    #  you have so many for loops you could for-get about getting full credit
+
+    G_clone = G.clone
+    subsets = []
+    for u in range((int)(G.N/3)):                           # for all numbers between 1 and G.N/3
+        for subset in combinations(list(range(G.N)), u):    # for all subsets of size u
+            if is_independent_set(G,subset):                # checks if it is independent
+                for i in subset:                            # if so, removes edge from copy of G, creating G - S
+                    for j in G_clone.edges(i):
+                        G_clone.remove_edge(i,j)
+
+                f_s = bfs_2_coloring(G_clone)               # 2 color G - S
+                if f_s:                                 
+                    for k in range(G.N):                    # if successful, add old edges back in
+                        if k not in G_clone.edges:          # if the node is not in 2colored subset (CHECK SYNTAX HERE)
+                            for l in G.edges(k):            # , add it back and color it 2
+                                G_clone.add_edge(k,l)
+                                G_clone.colors[k] = 2
+                    return G_clone.colors                   # return coloring
+        #     print(subset)
+
 
     G.reset_colors()
     return None

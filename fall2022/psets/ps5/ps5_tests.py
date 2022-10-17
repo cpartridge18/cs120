@@ -5,7 +5,7 @@ from ps5_helpers import timeout, color, generate_line_of_ring_subgraphs, generat
 from ps5 import Graph, exhaustive_search_coloring, bfs_2_coloring, iset_bfs_3_coloring
 
 
-TIMEOUT_LENGTH = 2
+TIMEOUT_LENGTH = 60
 INCLUDE_TESTS_FOR_STAFF_CODE = True
 
 class Debugger:
@@ -114,93 +114,93 @@ testcases = {
     # "2-colorable": [lambda: Graph(4).add_edge(0, 1).add_edge(1, 2).add_edge(2, 3),]
 
     "2-colorable": [
-        # lambda: Graph(2).add_edge(0, 1), # line length 2
-        # lambda: Graph(2).add_edge(1, 0), # line length 2
-        # lambda: Graph(4).add_edge(0, 1).add_edge(1, 2).add_edge(2, 3), # line length 4
-        # lambda: Graph(4).add_edge(0, 1).add_edge(1, 2).add_edge(2, 3).add_edge(3, 0), # sqaure
-        # lambda: Graph(8).add_edge(0, 1).add_edge(1, 2).add_edge(2, 3).add_edge(3, 0).add_edge(0, 4).add_edge(1, 5).add_edge(2, 6).add_edge(3,7), # sqaure with line out of each node
+        lambda: Graph(2).add_edge(0, 1), # line length 2
+        lambda: Graph(2).add_edge(1, 0), # line length 2
+        lambda: Graph(4).add_edge(0, 1).add_edge(1, 2).add_edge(2, 3), # line length 4
+        lambda: Graph(4).add_edge(0, 1).add_edge(1, 2).add_edge(2, 3).add_edge(3, 0), # sqaure
+        lambda: Graph(8).add_edge(0, 1).add_edge(1, 2).add_edge(2, 3).add_edge(3, 0).add_edge(0, 4).add_edge(1, 5).add_edge(2, 6).add_edge(3,7), # sqaure with line out of each node
         lambda: Graph(8).add_edge(0, 1).add_edge(1, 2).add_edge(2, 3).add_edge(3, 4).add_edge(4, 5).add_edge(5, 6).add_edge(7, 0).clone_and_merge(Graph(8).add_edge(0, 1).add_edge(1, 2).add_edge(2, 3).add_edge(3, 4).add_edge(4, 5).add_edge(5, 6).add_edge(7, 0), None, None), # sqaure with line out of each node
         lambda: Graph(8).add_edge(0, 1).add_edge(1, 2).add_edge(2, 3).add_edge(3, 4).add_edge(4, 5).add_edge(5, 6).add_edge(7, 0).clone_and_merge(Graph(8).add_edge(0, 1).add_edge(1, 2).add_edge(2, 3).add_edge(3, 4).add_edge(4, 5).add_edge(5, 6).add_edge(7, 0), 0, 0), # sqaure with line out of each node
     ],
-    # "2-colorable-large": [
-    #     lambda: generate_random_linked_cluster(Graph, 100, 2, 0.3),
-    #     lambda: generate_random_linked_cluster(Graph, 100, 2, 0.5),
-    #     lambda: generate_random_linked_cluster(Graph, 100, 2, 0.7),
-    #     lambda: generate_random_linked_cluster(Graph, 200, 2, 0.3),
-    #     lambda: generate_random_linked_cluster(Graph, 200, 2, 0.5),
-    #     lambda: generate_random_linked_cluster(Graph, 200, 2, 0.7),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 200, 2),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 400, 2),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 600, 2),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 800, 2),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 1000, 2),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 2000, 2),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 3000, 2),
-    # ],
-    # "2-or-3-colorable": [
-    #     lambda: generate_line_of_ring_subgraphs(Graph, 10, 4),
-    #     lambda: generate_random_linked_cluster(Graph, 100, 2, 0.3),
-    #     lambda: generate_random_linked_cluster(Graph, 100, 2, 0.5),
-    #     lambda: generate_random_linked_cluster(Graph, 100, 2, 0.7),
-    #     lambda: generate_random_linked_cluster(Graph, 200, 2, 0.3),
-    #     lambda: generate_random_linked_cluster(Graph, 200, 2, 0.5),
-    #     lambda: generate_random_linked_cluster(Graph, 200, 2, 0.7),
-    # ],
-    # "3-colorable": [
-    #     lambda: Graph(3).add_edge(0, 1).add_edge(1, 2).add_edge(2, 0), # 3 node triangle
-    #     lambda: Graph(3).add_edge(1, 2).add_edge(2, 0).add_edge(0, 1), # 3 node triangle
-    #     lambda: Graph(3).add_edge(2, 0).add_edge(0, 1).add_edge(1, 2), # 3 node triangle
-    #     lambda: Graph(6).add_edge(2, 0).add_edge(0, 1).add_edge(1, 2).add_edge(3, 4).add_edge(4, 5).add_edge(5, 3), # 3 node triangle x2 disconnected
-    #     lambda: Graph(6).add_edge(0, 1).add_edge(1, 2).add_edge(2, 0).add_edge(3, 4).add_edge(4, 5).add_edge(5, 3), # 3 node triangle x2 disconnected
-    #     lambda: Graph(6).add_edge(1, 2).add_edge(2, 0).add_edge(0, 1).add_edge(3, 4).add_edge(4, 5).add_edge(5, 3), # 3 node triangle x2 disconnected
-    #     lambda: Graph(6).add_edge(1, 2).add_edge(2, 0).add_edge(0, 1).add_edge(0, 3).add_edge(1, 4).add_edge(1, 5), # 3 node triangle with line out of each node
-    #     # 3 node triangle with 2 line out of each node
-    #     lambda: Graph(9).add_edge(1, 2).add_edge(2, 0).add_edge(0, 1).add_edge(0, 3).add_edge(1, 4).add_edge(1, 5).add_edge(0, 6).add_edge(1, 7).add_edge(1, 8), 
-    #     # 3 node triangle with 2 line out of each node
-    #     lambda: Graph(9).add_edge(2, 0).add_edge(0, 1).add_edge(1, 2).add_edge(0, 3).add_edge(1, 4).add_edge(1, 5).add_edge(0, 6).add_edge(1, 7).add_edge(1, 8),
-    #     lambda: generate_complete_graph(Graph, 3).clone_and_merge(generate_complete_graph(Graph, 3), 2, 0).clone_and_merge(generate_complete_graph(Graph, 3), 5, 0).clone_and_merge(generate_complete_graph(Graph, 3), 8, 0),
-    #     lambda: generate_line_of_ring_subgraphs(Graph, 10, 3),
-    #     lambda: generate_line_of_ring_subgraphs(Graph, 10, 5),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 2, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 3, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 4, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 5, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 6, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 7, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 8, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 9, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 10, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 11, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 12, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 15, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 20, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 40, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 60, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 80, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 100, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 150, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 200, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 400, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 600, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 800, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 1000, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 2000, 3),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 3000, 3),
-    # ],
-    # "k>3-colorable": [
-    #     lambda: generate_complete_graph(Graph, 4),
-    #     lambda: generate_complete_graph(Graph, 5),
-    #     lambda: generate_complete_graph(Graph, 6),
-    #     lambda: generate_complete_graph(Graph, 3).clone_and_merge(generate_complete_graph(Graph, 4), None, None),
-    #     lambda: generate_complete_graph(Graph, 4).clone_and_merge(generate_complete_graph(Graph, 3), None, None),
-    #     lambda: generate_complete_graph(Graph, 7).clone_and_merge(generate_complete_graph(Graph, 3), None, None),
-    #     lambda: generate_complete_graph(Graph, 2).clone_and_merge(generate_complete_graph(Graph, 4), None, None),
-    #     lambda: generate_complete_graph(Graph, 4).clone_and_merge(generate_complete_graph(Graph, 2), None, None),
-    #     lambda: generate_complete_graph(Graph, 7).clone_and_merge(generate_complete_graph(Graph, 2), None, None),
-    #     lambda: generate_complete_graph(Graph, 7),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 20, 4),
-    #     lambda: generate_line_of_complete_subgraphs(Graph, 20, 5), 
-    # ],
+    "2-colorable-large": [
+        lambda: generate_random_linked_cluster(Graph, 100, 2, 0.3),
+        lambda: generate_random_linked_cluster(Graph, 100, 2, 0.5),
+        lambda: generate_random_linked_cluster(Graph, 100, 2, 0.7),
+        lambda: generate_random_linked_cluster(Graph, 200, 2, 0.3),
+        lambda: generate_random_linked_cluster(Graph, 200, 2, 0.5),
+        lambda: generate_random_linked_cluster(Graph, 200, 2, 0.7),
+        lambda: generate_line_of_complete_subgraphs(Graph, 200, 2),
+        lambda: generate_line_of_complete_subgraphs(Graph, 400, 2),
+        lambda: generate_line_of_complete_subgraphs(Graph, 600, 2),
+        lambda: generate_line_of_complete_subgraphs(Graph, 800, 2),
+        lambda: generate_line_of_complete_subgraphs(Graph, 1000, 2),
+        lambda: generate_line_of_complete_subgraphs(Graph, 2000, 2),
+        lambda: generate_line_of_complete_subgraphs(Graph, 3000, 2),
+    ],
+    "2-or-3-colorable": [
+        lambda: generate_line_of_ring_subgraphs(Graph, 10, 4),
+        lambda: generate_random_linked_cluster(Graph, 100, 2, 0.3),
+        lambda: generate_random_linked_cluster(Graph, 100, 2, 0.5),
+        lambda: generate_random_linked_cluster(Graph, 100, 2, 0.7),
+        lambda: generate_random_linked_cluster(Graph, 200, 2, 0.3),
+        lambda: generate_random_linked_cluster(Graph, 200, 2, 0.5),
+        lambda: generate_random_linked_cluster(Graph, 200, 2, 0.7),
+    ],
+    "3-colorable": [
+        lambda: Graph(3).add_edge(0, 1).add_edge(1, 2).add_edge(2, 0), # 3 node triangle
+        lambda: Graph(3).add_edge(1, 2).add_edge(2, 0).add_edge(0, 1), # 3 node triangle
+        lambda: Graph(3).add_edge(2, 0).add_edge(0, 1).add_edge(1, 2), # 3 node triangle
+        lambda: Graph(6).add_edge(2, 0).add_edge(0, 1).add_edge(1, 2).add_edge(3, 4).add_edge(4, 5).add_edge(5, 3), # 3 node triangle x2 disconnected
+        lambda: Graph(6).add_edge(0, 1).add_edge(1, 2).add_edge(2, 0).add_edge(3, 4).add_edge(4, 5).add_edge(5, 3), # 3 node triangle x2 disconnected
+        lambda: Graph(6).add_edge(1, 2).add_edge(2, 0).add_edge(0, 1).add_edge(3, 4).add_edge(4, 5).add_edge(5, 3), # 3 node triangle x2 disconnected
+        lambda: Graph(6).add_edge(1, 2).add_edge(2, 0).add_edge(0, 1).add_edge(0, 3).add_edge(1, 4).add_edge(1, 5), # 3 node triangle with line out of each node
+        # 3 node triangle with 2 line out of each node
+        lambda: Graph(9).add_edge(1, 2).add_edge(2, 0).add_edge(0, 1).add_edge(0, 3).add_edge(1, 4).add_edge(1, 5).add_edge(0, 6).add_edge(1, 7).add_edge(1, 8), 
+        # 3 node triangle with 2 line out of each node
+        lambda: Graph(9).add_edge(2, 0).add_edge(0, 1).add_edge(1, 2).add_edge(0, 3).add_edge(1, 4).add_edge(1, 5).add_edge(0, 6).add_edge(1, 7).add_edge(1, 8),
+        lambda: generate_complete_graph(Graph, 3).clone_and_merge(generate_complete_graph(Graph, 3), 2, 0).clone_and_merge(generate_complete_graph(Graph, 3), 5, 0).clone_and_merge(generate_complete_graph(Graph, 3), 8, 0),
+        lambda: generate_line_of_ring_subgraphs(Graph, 10, 3),
+        lambda: generate_line_of_ring_subgraphs(Graph, 10, 5),
+        lambda: generate_line_of_complete_subgraphs(Graph, 2, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 3, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 4, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 5, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 6, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 7, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 8, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 9, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 10, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 11, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 12, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 15, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 20, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 40, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 60, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 80, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 100, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 150, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 200, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 400, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 600, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 800, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 1000, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 2000, 3),
+        lambda: generate_line_of_complete_subgraphs(Graph, 3000, 3),
+    ],
+    "k>3-colorable": [
+        lambda: generate_complete_graph(Graph, 4),
+        lambda: generate_complete_graph(Graph, 5),
+        lambda: generate_complete_graph(Graph, 6),
+        lambda: generate_complete_graph(Graph, 3).clone_and_merge(generate_complete_graph(Graph, 4), None, None),
+        lambda: generate_complete_graph(Graph, 4).clone_and_merge(generate_complete_graph(Graph, 3), None, None),
+        lambda: generate_complete_graph(Graph, 7).clone_and_merge(generate_complete_graph(Graph, 3), None, None),
+        lambda: generate_complete_graph(Graph, 2).clone_and_merge(generate_complete_graph(Graph, 4), None, None),
+        lambda: generate_complete_graph(Graph, 4).clone_and_merge(generate_complete_graph(Graph, 2), None, None),
+        lambda: generate_complete_graph(Graph, 7).clone_and_merge(generate_complete_graph(Graph, 2), None, None),
+        lambda: generate_complete_graph(Graph, 7),
+        lambda: generate_line_of_complete_subgraphs(Graph, 20, 4),
+        lambda: generate_line_of_complete_subgraphs(Graph, 20, 5), 
+    ],
 }
 
 
@@ -222,10 +222,10 @@ def test_3_coloring():
 
     if INCLUDE_TESTS_FOR_STAFF_CODE:
         tests["Exhaustive 3-Coloring (Staff Provided)"] = [] 
-        tests["Exhaustive 3-Coloring (Staff Provided)"] += [generate_test("Should work on 2-colorable graphs", g, lambda g: validate_graph_coloring(g, exhaustive_search_coloring(g, 3)), lambda g: True) for g in testcases["2-colorable"]]
-        tests["Exhaustive 3-Coloring (Staff Provided)"] += [generate_test("Should work on 2-or-3-colorable graphs", g, lambda g: validate_graph_coloring(g, exhaustive_search_coloring(g, 3)), lambda g: True) for g in testcases["2-or-3-colorable"]]
-        tests["Exhaustive 3-Coloring (Staff Provided)"] += [generate_test("Should work on 3-colorable graphs", g, lambda g: validate_graph_coloring(g, exhaustive_search_coloring(g, 3)), lambda g: True) for g in testcases["3-colorable"]]
-        tests["Exhaustive 3-Coloring (Staff Provided)"] += [generate_test("Should not work on k>3-colorable graphs", g, lambda g: validate_graph_coloring(g, exhaustive_search_coloring(g, 3)), lambda g: False) for g in testcases["k>3-colorable"]]
+        # tests["Exhaustive 3-Coloring (Staff Provided)"] += [generate_test("Should work on 2-colorable graphs", g, lambda g: validate_graph_coloring(g, exhaustive_search_coloring(g, 3)), lambda g: True) for g in testcases["2-colorable"]]
+        # tests["Exhaustive 3-Coloring (Staff Provided)"] += [generate_test("Should work on 2-or-3-colorable graphs", g, lambda g: validate_graph_coloring(g, exhaustive_search_coloring(g, 3)), lambda g: True) for g in testcases["2-or-3-colorable"]]
+        # tests["Exhaustive 3-Coloring (Staff Provided)"] += [generate_test("Should work on 3-colorable graphs", g, lambda g: validate_graph_coloring(g, exhaustive_search_coloring(g, 3)), lambda g: True) for g in testcases["3-colorable"]]
+        # tests["Exhaustive 3-Coloring (Staff Provided)"] += [generate_test("Should not work on k>3-colorable graphs", g, lambda g: validate_graph_coloring(g, exhaustive_search_coloring(g, 3)), lambda g: False) for g in testcases["k>3-colorable"]]
 
         tests["ISET 3-Coloring (Staff Provided)"] = [] 
         tests["ISET 3-Coloring (Staff Provided)"] += [generate_test("Should work on 2-colorable graphs", g, lambda g: validate_graph_coloring(g, iset_bfs_3_coloring(g)), lambda g: True) for g in testcases["2-colorable"]]
