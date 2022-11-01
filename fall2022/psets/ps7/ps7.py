@@ -1,6 +1,6 @@
 from itertools import product, combinations
 from pysat.solvers import Glucose3
-
+import math
 '''
 Before you start: Read the README and the Graph implementation below.
 '''
@@ -187,10 +187,37 @@ def iset_bfs_3_coloring(G):
 # Given an instance of the Graph class G, reduces 3 coloring to SAT
 # If successful, modifies G.colors and returns the coloring.
 # If no coloring is possible, resets all of G's colors to None and returns None.
+
+# solver.add_clause([1, -2, 3])
+# solver.add_clause([4, 5, 7])
+
+# the above code would create (1 or not 2 or 3) AND (4 or 5 or 7)
+
+# lecture notesL https://github.com/Harvard-CS-120/cs120/blob/main/fall2022/lectures/lec15/2022-CS120-lec15-details.pdf
+
+# literal class
+# should have attribute vertex and color
+
+
+# def serialize(vertex, color):
+
+# def deserialize(lit_int): 
+
+
 def sat_3_coloring(G):
     solver = Glucose3()
 
-    # TODO: Add the clauses to the solver
+    # print(-int(str(1)+"0"))
+
+    # 1: Create clauses x_i,j that represent if the ith vertex is the jth color (0,1,2). Make i start at 1!
+    for v in range(1, G.N+1):
+ 
+        solver.add_clause([int(str(v)+"0"), int(str(v)+"1"),int(str(v)+"2")]) # for vertex number 1, create literal 10, 11, 12
+        
+        for e in G.edges[v-1]:
+            solver.add_clause([-int(str(v)+"0"), -int(str(e+1)+"0")])
+            solver.add_clause([-int(str(v)+"1"), -int(str(e+1)+"1")])
+            solver.add_clause([-int(str(v)+"2"), -int(str(e+1)+"2")])
 
     # Attempt to solve, return None if no solution possible
     if not solver.solve():
@@ -200,7 +227,13 @@ def sat_3_coloring(G):
     # Accesses the model in form [-v1, v2, -v3 ...], which denotes v1 = False, v2 = True, v3 = False, etc.
     solution = solver.get_model()
 
+    for li in solution:
+        if li > 0:
+            color = (li % 10)-1
+            vertex = math.floor((li / 10)) -1
+            G.colors[vertex] = color
     # TODO: If a solution is found, convert it into a coloring and update G.colors
+    # module 10 to get the color. divide by 10, subtract 1 to get the vertex
 
     return G.colors
 

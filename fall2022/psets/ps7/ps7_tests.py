@@ -5,7 +5,7 @@ from ps7_helpers import timeout, color, generate_line_of_ring_subgraphs, generat
 from ps7 import Graph, exhaustive_search_coloring, bfs_2_coloring, iset_bfs_3_coloring, sat_3_coloring
 
 # Number of seconds before timeout; feel free to adjust
-TIMEOUT_LENGTH = 2
+TIMEOUT_LENGTH = 15
 INCLUDE_TESTS_FOR_STAFF_CODE = False
 
 class Debugger:
